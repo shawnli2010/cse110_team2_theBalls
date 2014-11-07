@@ -2,10 +2,19 @@
 
 	<h1>EveryOneRichBank</h1>
     <h2>
- 		The online bank system developed by team "The Dwarf"
+ 		The online bank system developed by team "The Balls"
 	</h2>
 
-	<%= link_to "Sign up", signup_path, class: "btn btn-large btn-primary" %>
+	<% if !signed_in? %>
+		<%= link_to "Sign in", signin_path, class: "btn btn-large btn-primary" %>
+	<% else %>
+		<% if is_admin?%>
+			<%= link_to "Transaction System", users_path, class: "btn btn-large btn-primary" %>
+		<% else %>
+			<%= link_to "Get Balance", edit_user_path(current_user), class: "btn btn-large btn-primary" %>
+		<% end %>
+
+	<% end %>
 </div>
 <div class="row text-center">
 <%= link_to image_tag("female_dwarf.png", alt: "zhangling"), 'http://rubyonrails.org/' %>

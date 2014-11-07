@@ -38,4 +38,12 @@ module SessionsHelper
   def store_location
     session[:return_to] = request.fullpath if request.get?
   end
+
+  def is_admin?
+    current_user.admin
+  end
+
+  def is_admin_profile_page
+    current_page?('http://localhost:3000/users/1')
+  end
 end

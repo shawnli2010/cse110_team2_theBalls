@@ -1,0 +1,3 @@
+class Histories < ActiveRecord::Base
+	belongs_to :user
+end

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :signed_in_user, only: [:index, :edit, :update]
-  before_action :correct_user,   only: [:edit, :update]
+  before_action :correct_user,   only: :index
   before_action :admin_user,     only: :destroy
 
   def show
@@ -17,7 +17,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)    # Not necessary because of the method correct_user
+    @user = User.new(user_params)    
     if @user.save
       sign_in @user
       flash[:success] = "Welcome to the CSE110 Team 2 EveryOneRich Bank!"
@@ -28,14 +28,35 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])
+    @user = User.find(params[:id])   # Not necessary because of the method correct_user
   end
 
   def update
     @user = User.find(params[:id])    # Not necessary because of the method correct_user
-    if @user.update_attributes(user_params)
-      flash[:success] = "Profile updated"
-      redirect_to @user
+    @amount = 0
+    if params[:credit]
+      @credit = params[:user][:balance]   #:balance in this line means amount of money
+      @balance = @user.balance + @credit.to_f
+      #@amount = @credit
+    elsif params[:debit]
+      @debit = params[:user][:balance]    #:balance in this line means amount of money
+      @balance = @user.balance - @debit.to_f
+      if @balance < 0
+        @balance = @user.balance
+        flash[:error] = "Transaction is failed"
+        flash[:notice] = "You cannot withdrawl more than what is now in your account"
+        redirect_to edit_user_path(@user) and return
+      #else
+        #@amount = -@debit
+      end
+
+    end
+
+    if @user.update_attribute(:balance, @balance)
+      flash[:success] = "Transaction is successful"
+      #@user.histories.build(amout: @amount, date: Time.now, balance: @balance, user_id:@user.id)
+      #@history = History.new(amout: @amount, date: Time.now, balance: @balance, user_id:@user.id)
+      redirect_to edit_user_path(@user)
     else
       render 'edit'
     end
@@ -54,8 +75,7 @@ class UsersController < ApplicationController
    private
 
     def user_params
-      params.require(:user).permit(:name, :email, :password,
-                                   :password_confirmation)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
 
      # Before filters
@@ -69,8 +89,7 @@ class UsersController < ApplicationController
     end
 
     def correct_user
-      @user = User.find(params[:id])
-      redirect_to(root_path) unless current_user?(@user)
+      redirect_to(root_path) unless is_admin?
     end
 
     def admin_user
