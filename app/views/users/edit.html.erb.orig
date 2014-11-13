@@ -1,0 +1,59 @@
+<% provide(:title, "Edit user") %>
+<<<<<<< HEAD
+
+<% if is_admin? %>
+
+  <h1>Deposit and Withdrawal System</h1>
+  <div class="row">
+    <div class="span6 offset3">
+        <%= form_for(@user) do |f| %>
+          <%= render 'shared/error_messages' %>
+
+          <%= f.label :balance, "Input the amount of money you want to credit/debit" %>
+          <%-#<%= f.text_field :balance -%> 
+          <%-#because I don't know how to turn off the auto filled using rails, so I put direct html line here-%> 
+          <input id="user_balance" name="user[balance]" type="text"/>
+
+
+          <%= f.submit "Credit", class: "btn btn-large btn-primary", :name => 'credit' %>
+          <%= f.submit "Debit", class: "btn btn-large btn-primary", :name => 'debit' %>
+      <% end %>
+
+      <%= gravatar_for @user %>
+      <a href="http://gravatar.com/emails">change</a>
+    </div>
+  </div>
+
+<% else %>
+
+  <h1>Your current Balance: <%= @user.balance %></h1>
+
+<% end %>
+=======
+<h1>Update your profile</h1>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for(@user) do |f| %>
+      <%= render 'shared/error_messages' %>
+
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+
+      <%= f.label :email %>
+      <%= f.text_field :email %>
+
+      <%= f.label :password %>
+      <%= f.password_field :password %>
+
+      <%= f.label :password_confirmation, "Confirm Password" %>
+      <%= f.password_field :password_confirmation %>
+
+      <%= f.submit "Save changes", class: "btn btn-large btn-primary" %>
+    <% end %>
+
+    <%= gravatar_for @user %>
+    <a href="http://gravatar.com/emails">change</a>
+  </div>
+</div>
+>>>>>>> 3c23ba55175beddd870f478c74fc3fa4f526ce8f
