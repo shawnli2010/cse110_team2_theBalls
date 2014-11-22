@@ -11,6 +11,7 @@
       <%= gravatar_for user %>
       <%= link_to user.name, balance_user_path(user) %>
       <% if current_user.admin? && !current_user?(user) %>
+    | <%= user.email %>  
     | <%= link_to "close account", user, method: :delete,
                                   data: { confirm: "You sure?" } %>
   <% end %>
