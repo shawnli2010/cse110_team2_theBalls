@@ -11,15 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141107182112) do
+ActiveRecord::Schema.define(version: 20141121182731) do
 
   create_table "histories", force: true do |t|
-    t.float    "amount"
-    t.datetime "date"
-    t.float    "balance"
     t.integer  "user_id"
+    t.float    "balance"
+    t.integer  "cd"
+    t.float    "amount"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "sbalance",   default: 0.0
   end
 
   create_table "users", force: true do |t|
@@ -31,6 +32,7 @@ ActiveRecord::Schema.define(version: 20141107182112) do
     t.string   "remember_token"
     t.boolean  "admin"
     t.float    "balance",         default: 0.0
+    t.float    "sbalance",        default: 0.0
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

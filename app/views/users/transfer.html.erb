@@ -1,0 +1,42 @@
+<% provide(:title, "Transfer Fund") %>
+<% if is_admin? %>
+
+  <h1>Transfer Fund System</h1>
+  <div class="row">
+    <div class="span6 offset3">
+        <%= form_tag process_transfer_user_path do %>
+
+          <%= label_tag(:source_email, "Source Email") %>
+          <%= text_field_tag(:source_email) %> 
+
+          <%= label_tag(:dest_email, "Destination Email") %>
+          <%= text_field_tag(:dest_email) %> 
+
+          <%= label_tag(:amount, "Transfer Amount") %>
+          <%= text_field_tag(:amount) %> 
+
+          <%= submit_tag "Transfer", class: "btn btn-large btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+
+<% else %>
+
+  <h1>Customer Transfer Fund System</h1>
+  <div class="row">
+    <div class="span6 offset3">
+        <%= form_tag process_transfer_user_path do %>
+
+          <%= label_tag(:amount, "Transfer Amount") %>
+          <%= text_field_tag(:amount) %> 
+
+          <%= submit_tag "Checking to Saving", 
+          class: "btn btn-large btn-primary", :name => 'cToS' %>
+          <%= submit_tag "Saving to Checking", 
+          class: "btn btn-large btn-primary", :name => 'sToC' %>
+
+      <% end %>
+    </div>
+  </div>
+
+<% end %>

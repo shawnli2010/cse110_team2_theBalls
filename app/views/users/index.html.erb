@@ -1,5 +1,7 @@
 <% provide(:title, 'All users') %>
-<h1>All users in Transaction System</h1>
+<h1>All users in Transaction System</h1><br>
+
+<p><%= link_to "Transfer Fund", transfer_user_path(@users.first), class: "btn btn-large btn-primary" %></p>
 
 <%= will_paginate %>
 
@@ -7,9 +9,9 @@
   <% @users.each do |user| %>
     <li>
       <%= gravatar_for user %>
-      <%= link_to user.name, edit_user_path(user) %>
+      <%= link_to user.name, balance_user_path(user) %>
       <% if current_user.admin? && !current_user?(user) %>
-    | <%= link_to "delete", user, method: :delete,
+    | <%= link_to "close account", user, method: :delete,
                                   data: { confirm: "You sure?" } %>
   <% end %>
     </li>

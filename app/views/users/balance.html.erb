@@ -1,0 +1,40 @@
+<% provide(:title, "Change Balance") %>
+<% if is_admin? %>
+
+  <h1>Deposit and Withdrawal System</h1>
+  <div class="row">
+    <div class="span6 offset3">
+        <%= form_tag process_cd_user_path do %>
+
+          <%= label_tag(:amount, "Input the amount of money you want to credit/debit") %>
+          <%= text_field_tag(:amount) %> 
+
+
+          <%= submit_tag "Credit", class: "btn btn-large btn-primary", :name => 'credit' %>
+          <%= submit_tag "Debit", class: "btn btn-large btn-primary", :name => 'debit' %>
+      <% end %>
+
+      <%= gravatar_for @user %>
+    </div>
+  </div>
+
+  <br><br>
+  <h3><%= @user.name %>'s current CheckingBalance: <%= @user.balance %></h3><br>
+  <h3><%= @user.name %>'s current SavingBalance: <%= @user.sbalance %></h3><br>
+  <h3><%= @user.name %>'s Transaction History:</h3><br>
+
+  <% @histories.each do |history| %>
+    <p><%= history %> </p><br>
+  <% end %>
+
+<% else %>
+
+  <h1>Current CheckingBalance: <%= @user.balance %></h1>
+  <h1>Current SavingBalance: <%= @user.sbalance %></h1>
+  <h3>Transaction History:</h3><br>
+
+  <% @histories.each do |history| %>
+    <p><%= history %> </p><br>
+  <% end %>
+
+<% end %>

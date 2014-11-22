@@ -1,5 +1,13 @@
 SampleApp::Application.routes.draw do
-  resources :users
+  resources :users do
+    member do
+      get :balance
+      post :process_cd
+      get :transfer 
+      post :process_transfer
+      get :process_transfer
+    end
+  end
   resources :sessions, only: [:new, :create, :destroy]
 
   root to: 'static_pages#home'  
