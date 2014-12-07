@@ -20,9 +20,9 @@
                 <ul class="dropdown-menu">
                   <li><%= link_to "Profile", user_path(current_user) %></li>
                   <% if !is_admin? %>
-                     <li><%= link_to "Current Balance", balance_user_path(current_user)%></li>
-                      <li><%= link_to "Internal Transfer", transfer_user_path(current_user)%></li>
-                      <li><%= link_to "Setting", edit_user_path(current_user)%></li>
+                     <li><%= link_to "Accounts Management", balance_user_path(current_user)%></li>
+                      <li><%= link_to "Transfer Money", transfer_user_path(current_user)%></li>
+                      <li><%= link_to "Personal Information Setting", edit_user_path(current_user)%></li>
                   <% end %>
                   <li class="divider"></li>
                   <li>

@@ -2,6 +2,7 @@
 <% if is_admin? %>
 
   <h1>Transfer Fund System</h1>
+
   <div class="row">
     <div class="span6 offset3">
         <%= form_tag process_transfer_user_path do %>
@@ -12,29 +13,88 @@
           <%= label_tag(:dest_email, "Destination Email") %>
           <%= text_field_tag(:dest_email) %> 
 
-          <%= label_tag(:amount, "Transfer Amount") %>
-          <%= text_field_tag(:amount) %> 
-
-          <%= submit_tag "Transfer", class: "btn btn-large btn-primary" %>
+          <%= submit_tag "Next", class: "btn btn-large btn-primary" %>
       <% end %>
     </div>
   </div>
 
+  <h3>Customers' email list</h3>
+  <ul class="users">
+  <% @users.each do |user| %>
+    <li>
+    <p style = "font-weight:bold"><%= user.name %></p><%= user.email %>  
+  <% end %>
+  </ul>
+
+  <br>
+  <%= form_tag apply_ip_user_path do %>
+      <%= submit_tag "Apply Interest/Penalty", class: "btn btn-large btn-primary", :name => 'apply' %>
+  <% end %>
+
 <% else %>
 
-  <h1>Customer Transfer Fund System</h1>
+  <h1>Customer Transfer Fund System</h1><br>
+  <h3>My accounts</h3>
+
+  <%# List out all the accounts that this user has with
+      account type, account id and account balance %>
+  <table style = "width:100%">
+    <tr style = "font-weight: bold">
+          <td>Account Type </td>
+          <td>Account ID </td>
+          <td>Account Balance </td>
+    </tr>
+  <% @all_accounts_strings.each do |account_strings| %>
+    <tr>
+          <td><%= account_strings[0]  %></td>
+          <td><%= account_strings[1] %></td>
+          <td><%= account_strings[2] %></td>
+    </tr>
+  <% end %>
+  </table>
+  <br>
+  <h3>Internal transfer between my own accounts</h3>
+
   <div class="row">
     <div class="span6 offset3">
         <%= form_tag process_transfer_user_path do %>
 
+          <%= label_tag(:source_account_id, "Source Account ID") %>
+          <%= text_field_tag(:source_account_id) %> 
+
+          <%= label_tag(:dest_account_id, "Destination Account ID") %>
+          <%= text_field_tag(:dest_account_id) %> 
+
+          <%= label_tag(:i_amount, "Transfer Amount") %>
+          <%= text_field_tag(:i_amount) %> 
+
+          <%= submit_tag "Transfer", 
+          class: "btn btn-large btn-primary", :name => 'internal' %>
+
+      <% end %>
+    </div>
+  </div>
+
+  <h3>Transfer to other customer's account</h3>
+    <div class="row">
+    <div class="span6 offset3">
+        <%= form_tag process_transfer_user_path do %>
+
+          <%= label_tag(:recipient_name, "Recipient's name") %>
+          <%= text_field_tag(:recipient_name) %> 
+
+          <%= label_tag(:recipient_email, "Recipient's email") %>
+          <%= text_field_tag(:recipient_email) %> 
+
           <%= label_tag(:amount, "Transfer Amount") %>
           <%= text_field_tag(:amount) %> 
 
-          <%= submit_tag "Checking to Saving", 
-          class: "btn btn-large btn-primary", :name => 'cToS' %>
-          <%= submit_tag "Saving to Checking", 
-          class: "btn btn-large btn-primary", :name => 'sToC' %>
+          <%= label_tag(:acct_ID, "Transfer From") %>
+          <p style = "font-weight:bold; color:red">Input the account ID</p>
+          <%= text_field_tag(:acct_ID) %> 
 
+          <%= submit_tag "Transfer", 
+          class: "btn btn-large btn-primary", :name => 'outside'%>
       <% end %>
     </div>
   </div>

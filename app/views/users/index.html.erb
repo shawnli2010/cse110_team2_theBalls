@@ -7,16 +7,18 @@
 
 <ul class="users">
   <% @users.each do |user| %>
+    <% next if user.existence == false || user.admin == true%>
     <li>
       <%= gravatar_for user %>
       <%= link_to user.name, balance_user_path(user) %>
       <% if current_user.admin? && !current_user?(user) %>
     | <%= user.email %>  
-    | <%= link_to "close account", user, method: :delete,
-                                  data: { confirm: "You sure?" } %>
   <% end %>
     </li>
   <% end %>
 </ul>
 
 <%= will_paginate %>
+
+
+

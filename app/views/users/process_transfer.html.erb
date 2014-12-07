@@ -1,2 +1,60 @@
 <% provide(:title, "Process Transfer") %>
-<p><%= @emailString %></p>
+<% if is_admin? %>
+
+  <h1>Transfer Fund System</h1>
+
+  <%# List out all the accounts of source user and destination user %>
+
+  <table style = "width:100%">
+    <tr style = "font-weight: bold">
+          <td>Source Account Type </td>
+          <td>Source Account ID </td>
+          <td>Source Account Balance </td>
+    </tr>
+  <% @all_sAccounts_strings.each do |account_strings| %>
+    <tr>
+          <td><%= account_strings[0]  %></td>
+          <td><%= account_strings[1] %></td>
+          <td><%= account_strings[2] %></td>
+    </tr>
+  <% end %>
+  </table>
+
+  <table style = "width:100%">
+    <tr style = "font-weight: bold">
+          <td>Destination Account Type </td>
+          <td>Destination Account ID </td>
+          <td>Destination Account Balance </td>
+    </tr>
+  <% @all_dAccounts_strings.each do |account_strings| %>
+    <tr>
+          <td><%= account_strings[0]  %></td>
+          <td><%= account_strings[1] %></td>
+          <td><%= account_strings[2] %></td>
+    </tr>
+  <% end %>
+  </table>
+
+  <div class="row">
+    <div class="span6 offset3">
+        <%= form_tag do_transfer_user_path do %>
+
+          <%= label_tag(:sAccount_id, "Source Account ID") %>
+          <%= text_field_tag(:sAccount_id) %> 
+
+          <%= label_tag(:dAccount_id, "Destination Account ID") %>
+          <%= text_field_tag(:dAccount_id) %> 
+
+          <%= label_tag(:amount, "Transfer Amount") %>
+          <%= text_field_tag(:amount) %> 
+
+          <%= submit_tag "Transfer", class: "btn btn-large btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+
+<% else %>
+
+  <h1 style = "font-color:red">Only bank teller has access to this page</h1>
+
+<% end %>

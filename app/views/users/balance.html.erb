@@ -1,40 +1,170 @@
 <% provide(:title, "Change Balance") %>
+
 <% if is_admin? %>
 
   <h1>Deposit and Withdrawal System</h1>
+  <br>
+
+  <%# The button for closing this account %>
+  <div class="row">
+        <%= form_tag close_account_user_path do %>
+          <%= submit_tag "Close This Account", class: "btn btn-large btn-primary" %>
+      <% end %>
+  </div>
+
+  <h3><%= @user.name %>'s Account List</h3>
+<% else %>
+  <%# Check the alert for accounts' thresholds %>
+  <% @accounts.each do |account| %>
+    <% if account.threshold != nil %>
+      <% if account.balance < account.threshold %>
+        <% flash[:notice] = "Your account with ID:" + account.id.to_s  + " has balance that is lower than its threshold:" + account.threshold.to_s %>
+      <% end %>
+    <% end %>
+    
+  <% end %>
+  <h3>My Accounts</h3>
+
+<% end %>
+
+<%# List out all the accounts that this user has with
+    account type, account id and account balance %>
+<table style = "width:100%">
+  <tr style = "font-weight: bold">
+        <td>Account Type </td>
+        <td>Account ID </td>
+        <td>Account Balance </td>
+  </tr>
+<% @all_accounts_strings.each do |account_strings| %>
+  <tr>
+        <td><%= account_strings[0]  %></td>
+        <td><%= account_strings[1] %></td>
+        <td><%= account_strings[2] %></td>
+  </tr>
+<% end %>
+</table>
+
+<% if is_admin? %>
+
   <div class="row">
     <div class="span6 offset3">
         <%= form_tag process_cd_user_path do %>
+          <%= label_tag(:acct_id, "Input the account id that you want to credit/debit to") %>
+          <%= text_field_tag(:acct_id) %> 
 
           <%= label_tag(:amount, "Input the amount of money you want to credit/debit") %>
           <%= text_field_tag(:amount) %> 
 
-
           <%= submit_tag "Credit", class: "btn btn-large btn-primary", :name => 'credit' %>
           <%= submit_tag "Debit", class: "btn btn-large btn-primary", :name => 'debit' %>
       <% end %>
-
       <%= gravatar_for @user %>
     </div>
   </div>
-
   <br><br>
-  <h3><%= @user.name %>'s current CheckingBalance: <%= @user.balance %></h3><br>
-  <h3><%= @user.name %>'s current SavingBalance: <%= @user.sbalance %></h3><br>
-  <h3><%= @user.name %>'s Transaction History:</h3><br>
-
-  <% @histories.each do |history| %>
-    <p><%= history %> </p><br>
-  <% end %>
+  <h3><%= @user.name %>'s Transaction History:</h3>
 
 <% else %>
+  <br>
+  <h3> My Transaction History </h3>
+<% end %>
 
-  <h1>Current CheckingBalance: <%= @user.balance %></h1>
-  <h1>Current SavingBalance: <%= @user.sbalance %></h1>
-  <h3>Transaction History:</h3><br>
+<table style = "width:100%">
+    <tr style = "font-weight: bold">
+      <td>Transaction Time</td>
+      <td>Transaction Type</td>
+      <td>Transaction Amount </td>
+      <td>Balance </td>
+      <td>Account ID </td>
+      <td>Account Type </td>
+    </tr>
+<% @histories.each do |history_strings| %>
+    <tr>
+      <td><%= history_strings[0] %></td>
+      <td><%= history_strings[4] %></td>
+      <td><%= history_strings[1] %></td>
+      <td><%= history_strings[2] %></td>
+      <td><%= history_strings[3] %></td>
+      <td><%= history_strings[5] %></td>
+    </tr>
+<% end %>
+</table>
+  
+  <% if !is_admin? %>
+  <br><br>
+  <%# Section for the customer to enable or disable their accounts' receiving eligibility %>
+  <h3> Set my account's Receving Transfer Eligibility </h3>
+  
+  <%= form_tag set_receiving_user_path do %>
+  <%= label_tag(:acct_ID, "Input the account ID") %>
+  <%= text_field_tag(:acct_ID) %> 
+          
+  <%= submit_tag "Enable Receving", class: "btn btn-large btn-primary", :name => 'enable' %>
+  <%= submit_tag "Disable Reveving", class: "btn btn-large btn-primary", :name => 'disable' %>
 
-  <% @histories.each do |history| %>
-    <p><%= history %> </p><br>
   <% end %>
+
+  <br><br>
+  <%# Section for the customer to set notification threshold for an account %>
+  <h3> Set my account's Notification Threshold </h3>
+  
+  <%= form_tag set_threshold_user_path do %>
+  <%= label_tag(:acct_ID, "Input the ID of the account that needs to be set threshold") %>
+  <%= text_field_tag(:acct_ID) %>
+
+  <%= label_tag(:threshold, "Input the threshold that needs to be set for the account") %>
+  <%= text_field_tag(:threshold) %>  
+          
+  <%= submit_tag "Set", class: "btn btn-large btn-primary", :name => 'disable' %>
+
+  <% end %>
+
+  <br><br>
+  <%# Section for the customer to set his or her default receiving account %>
+  <h3> Set default receiving account </h3>
+  
+  <%= form_tag set_dr_user_path do %>
+  <%= label_tag(:acct_ID, "Input the ID of the account that needs to be set to be default receving") %>
+  <%= text_field_tag(:acct_ID) %>
+          
+  <%= submit_tag "Set", class: "btn btn-large btn-primary"%>
+
+  <% end %>
+
+  <br><br>
+  <%# Section for the customer to open a new account or close an old account %>
+  <h3> Open a new Checking/Saving account </h3>
+  
+  <%= form_tag open_new_account_user_path do %>
+
+  <%= label_tag(:threshold, "Input the notification threshold of my new account") %>
+  <%= text_field_tag(:threshold) %> 
+
+  <p style = "font-weight:bold">Do you want this new account to be able to receive transfer?</p>
+  <%= select_tag "YesOrNo" , "<option>Yes</option>""<option>No</option>".html_safe %>
+  <br>
+
+  <p style = "font-weight:bold">What type of account do you want to open?</p>
+  <%= select_tag "AccountType" , "<option>Checking</option>""<option>Saving</option>".html_safe %>
+  <br>
+
+  <%= submit_tag "Open", class: "btn btn-large btn-primary", :name => 'open' %>
+
+  <% end %>
+
+  <br><br>
+  <%# Section for the customer to close an old account or close an old account %>
+  <h3> Close an account </h3>
+  
+  <%= form_tag close_old_account_user_path do %>
+
+  <%= label_tag(:old_acct_ID, "Input the ID of the account that needs to be closed") %>
+  <%= text_field_tag(:old_acct_ID) %>   
+
+  <%= submit_tag "Close", class: "btn btn-large btn-primary" %>
+
+  <% end %>
+
+
 
 <% end %>

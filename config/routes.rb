@@ -5,7 +5,15 @@ SampleApp::Application.routes.draw do
       post :process_cd
       get :transfer 
       post :process_transfer
-      get :process_transfer
+      #get :process_transfer
+      post :do_transfer
+      post :close_account
+      post :set_receiving
+      post :open_new_account
+      post :close_old_account
+      post :set_threshold
+      post :set_dr
+      post :apply_ip
     end
   end
   resources :sessions, only: [:new, :create, :destroy]

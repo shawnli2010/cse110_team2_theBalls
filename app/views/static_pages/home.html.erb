@@ -9,9 +9,12 @@
 		<%= link_to "Sign in", signin_path, class: "btn btn-large btn-primary" %>
 	<% else %>
 		<% if is_admin?%>
-			<%= link_to "Transaction System", users_path, class: "btn btn-large btn-primary" %>
+		 <%= link_to "Transaction System", users_path, class: "btn btn-large btn-primary" %>
+		 
+
+		
 		<% else %>
-			<%= link_to "Get Balance", balance_user_path(current_user), class: "btn btn-large btn-primary" %>
+		 <%= link_to "Get Balance", balance_user_path(current_user), class: "btn btn-large btn-primary" %>		
 		<% end %>
 
 	<% end %>
