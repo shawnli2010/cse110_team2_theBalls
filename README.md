@@ -10,9 +10,12 @@ Customer user will be able to do the following things in the banking system:<br/
 3. Close an existing account.<br/>
 4. Transfer money between his or her own accounts.<br/>
 5. Set threshold to certain account, if the amount of money in that account is lower than the threshold, a warning will pop up to remind the customer.<br/>
-6. Send money to other customer.<br/>
+6. Set account's receiving transfer eligibility. e.g. set whether an account is eligible or not to receive transfer fund from others.<br/>
+7. Set default receiving account.(the account that will receive transfer found from other customer)<br/>
+8. Send money to other customer.<br/>
  
 Admin user will be able to do the follwoing thins in the banking system:<br/>
 1. Debit or credit money to certain customer's account.<br/>
 2. Transfer money between different customer.<br/>
 3. Close a customer's account.<br/>
+4. Apply interest or penalty to customer's account.<br/>
